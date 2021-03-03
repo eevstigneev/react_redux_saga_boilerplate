@@ -1,12 +1,12 @@
 import {notification} from 'antd';
 import {SagaIterator} from 'redux-saga';
 import {call, put, StrictEffect} from 'redux-saga/effects';
-import {logout} from 'src/store/auth/auth.slice'
+import {logout} from 'src/store/auth/auth.actions';
 
 type Saga<Props> = (props: Props) => SagaIterator | StrictEffect;
 
 export function onException<Props>(saga: Saga<Props>) {
-  return function* exceptionChecker(props: Props) {
+  return function* exceptionChecker(props: Props): SagaIterator | StrictEffect {
     try {
       yield saga(props);
     } catch (e) {
@@ -16,11 +16,16 @@ export function onException<Props>(saga: Saga<Props>) {
           yield put(logout());
           return;
         }
-        yield call(notification.error, {message: 'Ошибка сервера', description: e.message});
+        yield call(notification.error, {
+          message: 'Ошибка сервера',
+          description: e.message,
+        });
         return;
       }
-      yield call(notification.error, {message: 'Ошибка', description: e.message});
-      return;
+      yield call(notification.error, {
+        message: 'Ошибка',
+        description: e.message,
+      });
     }
-  }
+  };
 }

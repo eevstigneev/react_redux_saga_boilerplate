@@ -1,12 +1,12 @@
-import {getToken, setToken} from '../../utils/storage/storage.token';
-import {getUserData, setUserData} from '../../utils/storage/storage.user';
-import {STORE_NAME, initialState} from './auth.slice';
+import {getToken, setToken} from 'src/utils/storage/storage.token';
+import {getUserData, setUserData} from 'src/utils/storage/storage.user';
+import {authReducer, initialState} from './auth.reducer';
 import type {RootState} from '../store';
-import type {Token, UserData} from './auth.types';
+import type {Token, UserData} from './auth.interfaces';
 
 // initial state from localStorage
 export const authState = {
-  [STORE_NAME]: {
+  [authReducer.name]: {
     ...initialState,
     token: getToken<Token>(),
     ...getUserData<UserData>(),
@@ -14,7 +14,7 @@ export const authState = {
 };
 // rehydrate state to Redux store
 export const saveAuthState = (state: RootState): void => {
-  const {token, username, roles} = state[STORE_NAME];
+  const {token, username, roles} = state[authReducer.name];
   setToken(token);
   setUserData({username, roles});
 };

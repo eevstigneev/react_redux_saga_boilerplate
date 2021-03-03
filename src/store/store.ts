@@ -8,8 +8,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const middleware = [...getDefaultMiddleware({thunk: false}), sagaMiddleware];
 
-export type RootState = ReturnType<typeof rootReducer>;
-
+export type {RootState} from './store.reducer';
 export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: rootReducer,

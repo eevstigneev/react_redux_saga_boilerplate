@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "experimentalDecorators": true,
+    "target": "ES6",
     "lib": [
       "es2020",
       "dom",

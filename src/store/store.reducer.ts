@@ -1,7 +1,17 @@
-import {combineReducers} from '@reduxjs/toolkit';
-import {authSlice} from './auth/auth.slice';
+import {AnyAction, combineReducers, Reducer} from '@reduxjs/toolkit';
 
-// eslint-disable-next-line import/prefer-default-export
-export const rootReducer = combineReducers({
-  [authSlice.name]: authSlice.reducer,
+import {authReducer} from './auth/auth.reducer';
+import {memberReducer} from './member/member.reducer';
+
+const combinedReducer = combineReducers({
+  [memberReducer.name]: memberReducer.reducer,
+  [authReducer.name]: authReducer.reducer,
 });
+
+export type RootState = ReturnType<typeof combinedReducer>;
+export const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
+  if (action.type === 'logout') {
+    return combinedReducer({} as RootState, action);
+  }
+  return combinedReducer(state, action);
+};
