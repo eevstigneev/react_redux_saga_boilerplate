@@ -3,6 +3,7 @@ import {login, loginFailed, loginSuccess, STORE_NAME} from './auth.actions';
 import type {InitialState} from './auth.interfaces';
 
 export const initialState: InitialState = {
+  id: null,
   username: '',
   token: null,
   roles: [],

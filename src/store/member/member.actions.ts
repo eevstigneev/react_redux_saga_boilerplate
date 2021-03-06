@@ -3,29 +3,34 @@ import {getActionHook, getPartOfStore} from 'src/hooks/react-redux';
 import {FetchStatus} from 'src/types';
 import {MemberDTO} from './member.interfaces';
 
-type ActionPayload =
-  | MemberDTO.FetchResponse
-  | MemberDTO.FetchOneRequest
-  | MemberDTO.FetchOneResponse
-  | MemberDTO.CreateRequest
-  | MemberDTO.CreateResponse
-  | MemberDTO.UpdateRequest
-  | MemberDTO.UpdateResponse
-  | MemberDTO.DeleteRequest
-  | MemberDTO.DeleteResponse
-  | void
-  | Error;
+type MemberActions = ReturnType<
+  | typeof fetch
+  | typeof fetchSuccess
+  | typeof fetchFailed
+  | typeof fetchOne
+  | typeof fetchOneSuccess
+  | typeof fetchFailed
+  | typeof addOne
+  | typeof addOneSuccess
+  | typeof addOneFailed
+  | typeof removeOne
+  | typeof removeOneSuccess
+  | typeof removeOneFailed
+  | typeof updateOne
+  | typeof updateOneSuccess
+  | typeof updateOneFailed
+>;
 
 export const STORE_NAME = 'member' as const;
 export const useMemberStore = getPartOfStore(STORE_NAME);
-export const useMemberAction = getActionHook<ActionPayload>();
+export const useMemberAction = getActionHook<MemberActions>();
 
 /**
  *  Fetch member list
  */
 const FETCH_TYPE = 'fetch';
 const FETCH = `${STORE_NAME}/${FETCH_TYPE}/${FetchStatus.pending}` as const;
-export const fetch = createAction<void, typeof FETCH>(FETCH);
+export const fetch = createAction<MemberDTO.FetchRequest, typeof FETCH>(FETCH);
 
 const FETCH_SUCCESS = `${STORE_NAME}/${FETCH_TYPE}/${FetchStatus.succeeded}` as const;
 export const fetchSuccess = createAction<MemberDTO.FetchResponse, typeof FETCH_SUCCESS>(FETCH_SUCCESS);

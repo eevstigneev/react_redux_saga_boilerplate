@@ -1,4 +1,5 @@
 export interface InitialState {
+  id: string | null;
   username: string;
   roles: string[];
   token: Token | null;
@@ -19,8 +20,13 @@ export namespace LoginDTO {
     password: string;
   }
   export interface Response {
+    id: string;
     username: string;
     roles: string[];
     token: Token | null;
   }
+}
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace LogoutDTO {
+  export type Request = void;
 }

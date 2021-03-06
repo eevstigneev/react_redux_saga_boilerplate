@@ -1,14 +1,15 @@
 import {createAction} from '@reduxjs/toolkit';
 import {getActionHook, getPartOfStore} from 'src/hooks/react-redux';
 import {FetchStatus} from 'src/types';
-import {LoginDTO} from './auth.interfaces';
+import {LoginDTO, LogoutDTO} from './auth.interfaces';
 
-type ActionPayload = LoginDTO.Request | LoginDTO.Response | Error;
+// type AuthPayload = LoginDTO.Request | LoginDTO.Response | Error | LogoutDTO.Request;
+type AuthActions = ReturnType<typeof logout | typeof login | typeof loginSuccess | typeof loginFailed>;
 
 export const STORE_NAME = 'auth' as const;
 
 export const useAuthStore = getPartOfStore(STORE_NAME);
-export const useAuthAction = getActionHook<ActionPayload>();
+export const useAuthAction = getActionHook<AuthActions>();
 
 /** Actions * */
 const LOGIN_TYPE = 'login';
@@ -22,4 +23,4 @@ const LOGIN_FAILED = `${STORE_NAME}/${LOGIN_TYPE}/${FetchStatus.failed}` as cons
 export const loginFailed = createAction<Error, typeof LOGIN_FAILED>(LOGIN_FAILED);
 
 export const LOGOUT = `logout` as const;
-export const logout = createAction<void, typeof LOGOUT>(LOGOUT);
+export const logout = createAction<LogoutDTO.Request, typeof LOGOUT>(LOGOUT);
