@@ -1,4 +1,5 @@
 import {appSrc} from '../../paths';
+import themeVariables from '../../theme/antd-theme';
 
 export const module = {
   rules: [
@@ -44,7 +45,7 @@ export const module = {
           options: {
             lessOptions: {
               javascriptEnabled: true,
-              modifyVars: require('../theme/antd-theme.js'),
+              modifyVars: themeVariables,
             },
           },
         },

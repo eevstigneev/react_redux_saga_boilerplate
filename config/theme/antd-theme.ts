@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   // header
   '@page-header-heading-title': '18px',
   '@heading-color': '#686f73',

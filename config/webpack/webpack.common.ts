@@ -18,7 +18,7 @@ export function webpackCommon(webpackEnv: string) {
   const resolve = {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
-      '~': paths.appSrc,
+      'src': paths.appSrc,
     },
   };
 
