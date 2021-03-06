@@ -1,4 +1,4 @@
-import {appSrc} from '../paths';
+import {appSrc} from '../../paths';
 
 export const module = {
   rules: [
@@ -25,11 +25,11 @@ export const module = {
                 '@babel/preset-react',
                 {
                   runtime: 'automatic',
-                  // importSource: '@emotion/react',
+                  importSource: '@emotion/react',
                 },
               ],
             ],
-            // plugins: [['import', {libraryName: 'antd', libraryDirectory: 'es', style: true}], '@emotion/babel-plugin'],
+            plugins: [['import', {libraryName: 'antd', libraryDirectory: 'es', style: true}], '@emotion/babel-plugin'],
           },
         },
       ],
@@ -44,7 +44,7 @@ export const module = {
           options: {
             lessOptions: {
               javascriptEnabled: true,
-              // modifyVars: require('../theme/antd-theme.js'),
+              modifyVars: require('../theme/antd-theme.js'),
             },
           },
         },

@@ -5,7 +5,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import {optimization} from "./shared/webpack.optimization";
 import {devServer} from "./shared/webpack.server";
 import {module} from './shared/webpack.module';
-import * as paths from './paths';
+import * as paths from '../paths';
 
 export function webpackCommon(webpackEnv: string) {
   const isEnvDevelopment = webpackEnv === 'development';
