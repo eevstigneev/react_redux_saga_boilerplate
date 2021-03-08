@@ -29,7 +29,7 @@
     "baseUrl": "."
   },
   "include": [
-    "config/jest/jest.setup.ts",
+    "config",
     "src"
   ],
   "exclude": [

@@ -1,6 +1,7 @@
 import {webpackCommon} from './webpack.common';
 
-process.env.BABEL_ENV = 'production';
-process.env.NODE_ENV = 'production';
+const mode = 'production' as const;
+process.env.BABEL_ENV = mode;
+process.env.NODE_ENV = mode;
 
-export default webpackCommon('production');
+export default webpackCommon({mode});

@@ -2,7 +2,7 @@ import {getToken, isExpiredToken} from 'src/utils/storage/storage.token';
 import type {Token} from 'src/store/auth/auth.interfaces';
 
 export function Secure(): MethodDecorator {
-  return (target, _key: string | symbol, descriptor: PropertyDescriptor): PropertyDescriptor => {
+  return (target, _key, descriptor: PropertyDescriptor): PropertyDescriptor => {
     const {value: originalMethod, ...restDescriptorProps} = descriptor;
     const secureDecorator = (...args: Parameters<typeof originalMethod>): ReturnType<typeof originalMethod> => {
       const token = getToken<Token>();

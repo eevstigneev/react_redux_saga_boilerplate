@@ -33,4 +33,4 @@ export class MemberApi extends API {
   }
 }
 
-export const memberApi = new MemberApi();
+export default new MemberApi();

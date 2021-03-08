@@ -1,12 +1,12 @@
-import TerserPlugin from 'terser-webpack-plugin'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import TerserPlugin from 'terser-webpack-plugin';
 
 export const optimization = {
   splitChunks: {
-    chunks: 'all',
-    // name: true,
+    chunks: 'all' as const,
   },
   runtimeChunk: {
-    name: (entrypoint: Record<string, string>) => `runtime-${entrypoint.name}`,
+    name: (entrypoint: Record<string, string>): string => `runtime-${entrypoint.name}`,
   },
   minimizer: [
     new TerserPlugin({
@@ -31,5 +31,4 @@ export const optimization = {
       parallel: true,
     }),
   ],
-}
-
+};

@@ -1,10 +1,7 @@
-import {requestInit, RequestProps} from './requestInit';
+import {requestInit} from './requestInit';
+import type {RequestProps} from './requestInit';
 
-// eslint-disable-next-line import/prefer-default-export
-export const clientFetch = async <Response, Payload = undefined>(
-  url: string,
-  requestProps: RequestProps<Payload>,
-): Promise<Response> => {
+export const clientFetch = async <Response>(url: string, requestProps: RequestProps): Promise<Response> => {
   const {headers, ...restProps} = requestProps;
   const res = await fetch(url, requestInit(restProps, headers));
   const data = await res.json();

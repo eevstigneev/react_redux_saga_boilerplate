@@ -1,3 +1,3 @@
 import '@testing-library/jest-dom';
 
-export const setup = async () => {};
+export const setup = async (): Promise<void> => {};

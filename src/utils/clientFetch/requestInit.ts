@@ -1,39 +1,83 @@
-type RequestInitWithoutBody = Omit<RequestInit, 'body'>;
+import {defaultRequestHeaders, defaultRequestOptions} from 'src/api/config';
 
-export interface RequestProps<Payload> extends RequestInitWithoutBody {
-  body?: FormData | Blob | Payload;
+type InitRequest = Omit<RequestInit, 'headers' | 'body'>;
+export type RequestHeaders = Record<string, string>;
+export type RequestBody = BodyInit | Record<string, unknown> | Record<string, unknown>[];
+export type RequestOptionsWoBody = Omit<RequestOptions, 'body'>;
+
+export interface RequestOptions extends InitRequest {
+  body?: RequestBody;
+}
+export interface RequestProps extends InitRequest {
+  body?: RequestBody;
+  headers?: RequestHeaders;
 }
 
-export type RequestOptions<Payload> = Omit<RequestProps<Payload>, 'headers'>;
-
-export type RequestHeaders = RequestInit['headers'];
-
-const jsonHeaders = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
+/**
+ * Returns true for serialized types
+ * @param body
+ * @returns boolean;
+ */
+const isBodyTypeLikeJson = (body?: RequestBody): boolean => {
+  const isBodyFormData = body instanceof FormData;
+  const isBodyBlob = body instanceof Blob || body instanceof File || body instanceof ArrayBuffer;
+  return !isBodyFormData && !isBodyBlob;
+};
+/**
+ * Composes default headers with optional headers
+ * @param defaultHeaders
+ * @returns (body: RequestBody, headers: RequestHeaders): RequestHeaders
+ */
+const composeHeaders = (defaultHeaders: RequestHeaders) => (
+  body?: RequestBody,
+  headers?: RequestHeaders,
+): RequestHeaders => {
+  if (!headers) return defaultHeaders;
+  return isBodyTypeLikeJson(body) ? {...defaultHeaders, ...headers} : headers;
 };
 
-const defaultOptions: RequestInitWithoutBody = {
-  credentials: 'same-origin' as const,
+/**
+ * Converts body to json if possible
+ * @param body
+ * @returns BodyInit | null
+ */
+const serializeBody = (body?: RequestBody): BodyInit | null => {
+  if (!body) return null;
+  if (isBodyTypeLikeJson(body) && typeof body === 'object') {
+    return JSON.stringify(body);
+  }
+  return body as BodyInit;
 };
 
-export const requestInit = <Payload>(init: RequestOptions<Payload>, headers?: RequestHeaders): RequestInit => {
-  const {body, ...restReq} = init;
-  if (!body) {
-    return {...defaultOptions, ...restReq, headers: {...jsonHeaders, ...headers}};
+export const withDefaultOptions = (options: RequestOptionsWoBody): RequestOptionsWoBody => ({
+  ...defaultRequestOptions,
+  ...options,
+});
+export const withDefaultHeaders = composeHeaders(defaultRequestHeaders);
+/**
+ *
+ * @param initOptions
+ * @param initHeaders
+ * @returns RequestInit
+ */
+export const requestInit = (initOptions: RequestOptions, initHeaders?: RequestHeaders): RequestInit => {
+  const {body, method, ...restReq} = initOptions;
+  const headers = withDefaultHeaders(body, initHeaders);
+  const requestOptions = withDefaultOptions(restReq);
+  switch (method) {
+    case 'get':
+      // without body
+      return {
+        ...requestOptions,
+        method,
+        headers,
+      };
+    default:
+      return {
+        ...requestOptions,
+        method,
+        headers,
+        body: serializeBody(body),
+      };
   }
-  /** Don't use for files
-    headers: {
-       'Content-Type': 'multipart/form-data',
-   } */
-  if (body instanceof FormData || body instanceof Blob || body instanceof ArrayBuffer) {
-    return {...defaultOptions, ...restReq, body, headers};
-  }
-
-  return {
-    ...defaultOptions,
-    ...restReq,
-    body: (typeof body === 'object' ? JSON.stringify(body) : body) as string,
-    headers: {...jsonHeaders, ...headers},
-  };
 };

@@ -1,12 +1,24 @@
+import type {Config} from '@jest/types';
 import {appSrc} from '../paths';
 
-export const preset = "ts-jest";
-// export const globalSetup =
-export const rootDir = appSrc;
-export const transform = {
-  "^.+\\.tsx?$": "ts-jest",
+function mapFromRootDir(path: string): string {
+  return `<rootDir>/${path}`;
+}
+
+const config: Config.InitialOptions = {
+  rootDir: appSrc,
+  preset: 'ts-jest',
+  transform: {'^.+\\.tsx?$': 'ts-jest'},
+  collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.{ts,tsx,js,jsx}', '!**/node_modules/**'],
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  testPathIgnorePatterns: ['/node_modules/'],
+  moduleDirectories: ['node_modules', mapFromRootDir('src')],
+  verbose: true,
+  moduleNameMapper: {
+    '^src/(.*)$': '<rootDir>/$1',
+  },
 };
-export const testRegex = "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
-export const testPathIgnorePatterns = ["/node_modules/"];
-export const moduleFileExtensions = ["ts", "tsx", "jsx", "json"];
-export const collectCoverage = true;
+
+export default config;

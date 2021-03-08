@@ -1,16 +1,18 @@
-import webpack from "webpack";
-import HtmlWebpackPlugin from  "html-webpack-plugin";
-import {CleanWebpackPlugin} from "clean-webpack-plugin";
+/* eslint-disable import/no-extraneous-dependencies */
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-import {optimization} from "./shared/webpack.optimization";
-import {devServer} from "./shared/webpack.server";
+/* eslint-enable */
+import {optimization} from './shared/webpack.optimization';
+import {devServer} from './shared/webpack.server';
 import {module} from './shared/webpack.module';
 import * as paths from '../paths';
 
-export function webpackCommon(webpackEnv: string) {
-  const isEnvDevelopment = webpackEnv === 'development';
-  const isEnvProduction = webpackEnv === 'production';
-  const mode = webpackEnv;
+export function webpackCommon({mode}: Pick<Required<webpack.Configuration>, 'mode'>): webpack.Configuration {
+  const isEnvDevelopment = mode === 'development';
+  const isEnvProduction = mode === 'production';
+
   const target = 'web';
   const devtool = isEnvProduction ? 'source-map' : 'eval';
   const entry = [paths.appEntry];
@@ -18,7 +20,7 @@ export function webpackCommon(webpackEnv: string) {
   const resolve = {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
-      'src': paths.appSrc,
+      src: paths.appSrc,
     },
   };
 
@@ -34,7 +36,8 @@ export function webpackCommon(webpackEnv: string) {
   const plugins = [
     isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
 
-    isEnvProduction && new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['build/*.*', 'dist/*.*'], verbose: false}),
+    isEnvProduction &&
+      new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['build/*.*', 'dist/*.*'], verbose: false}),
     isEnvProduction && new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /ru/),
 
     new webpack.EnvironmentPlugin(['NODE_ENV']),
@@ -45,18 +48,20 @@ export function webpackCommon(webpackEnv: string) {
       inject: true,
       assetsPath: '/assets/',
       scriptLoading: 'defer',
-      minify: isEnvProduction ? {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true,
-      } : {},
+      minify: isEnvProduction
+        ? {
+            removeComments: true,
+            collapseWhitespace: true,
+            removeRedundantAttributes: true,
+            useShortDoctype: true,
+            removeEmptyAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            keepClosingSlash: true,
+            minifyJS: true,
+            minifyCSS: true,
+            minifyURLs: true,
+          }
+        : false,
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -69,9 +74,9 @@ export function webpackCommon(webpackEnv: string) {
         },
       ],
     }),
-  ].filter(Boolean);
+  ].filter(Boolean) as webpack.WebpackPluginInstance[];
 
-  return Object.assign({}, {
+  return {
     mode,
     target,
     devtool,
@@ -79,10 +84,7 @@ export function webpackCommon(webpackEnv: string) {
     output,
     module,
     resolve,
-    plugins
-  },
-    isEnvProduction
-      ? {optimization}
-      : {devServer}
-  )
+    plugins,
+    ...(isEnvProduction ? {optimization} : {devServer}),
+  };
 }
