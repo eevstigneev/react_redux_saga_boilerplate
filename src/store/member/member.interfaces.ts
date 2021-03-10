@@ -21,7 +21,7 @@ export namespace MemberDTO {
   export type FetchOneRequest = Pick<Member, 'id'>;
   export type FetchOneResponse = Member;
 
-  export type CreateRequest = Partial<Omit<Member, 'id'>>;
+  export type CreateRequest = Omit<Member, 'id'>;
   export type CreateResponse = Member;
 
   export type UpdateRequest = Partial<Member>;

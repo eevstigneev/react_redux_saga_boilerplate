@@ -1,7 +1,10 @@
 import {requestInit} from './requestInit';
 import type {RequestProps} from './requestInit';
 
-export const clientFetch = async <Response>(url: string, requestProps: RequestProps): Promise<Response> => {
+export const clientFetch = async <Response, Payload = void>(
+  url: string,
+  requestProps: RequestProps<Payload>,
+): Promise<Response> => {
   const {headers, ...restProps} = requestProps;
   const res = await fetch(url, requestInit(restProps, headers));
   const data = await res.json();

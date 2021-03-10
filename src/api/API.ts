@@ -13,36 +13,36 @@ export class API {
     });
   }
 
-  protected async post<Response, Payload extends RequestBody>(
+  protected async post<Response, Payload>(
     url: string,
-    body: Payload,
+    body: RequestBody<Payload>,
     init?: RequestOptionsWoBody,
   ): Promise<Response> {
-    return clientFetch<Response>(API.baseUrl(url), {
+    return clientFetch<Response, Payload>(API.baseUrl(url), {
       method: 'post',
       body,
       ...init,
     });
   }
 
-  protected async put<Response, Payload extends RequestBody>(
+  protected async put<Response, Payload>(
     url: string,
-    body: Payload,
+    body: RequestBody<Payload>,
     init?: RequestOptionsWoBody,
   ): Promise<Response> {
-    return clientFetch<Response>(API.baseUrl(url), {
+    return clientFetch<Response, Payload>(API.baseUrl(url), {
       method: 'put',
       body,
       ...init,
     });
   }
 
-  protected async delete<Response, Payload extends RequestBody>(
+  protected async delete<Response, Payload>(
     url: string,
-    body?: Payload,
+    body?: RequestBody<Payload>,
     init?: RequestOptionsWoBody,
   ): Promise<Response> {
-    return clientFetch<Response>(API.baseUrl(url), {
+    return clientFetch<Response, Payload>(API.baseUrl(url), {
       method: 'delete',
       body,
       ...init,

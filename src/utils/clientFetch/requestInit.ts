@@ -2,14 +2,17 @@ import {defaultRequestHeaders, defaultRequestOptions} from 'src/api/config';
 
 type InitRequest = Omit<RequestInit, 'headers' | 'body'>;
 export type RequestHeaders = Record<string, string>;
-export type RequestBody = BodyInit | Record<string, unknown> | Record<string, unknown>[];
-export type RequestOptionsWoBody = Omit<RequestOptions, 'body'>;
+export type RequestBody<Body = void> = BodyInit extends Body ? BodyInit : Body;
 
-export interface RequestOptions extends InitRequest {
-  body?: RequestBody;
+export interface RequestOptionsWoBody extends InitRequest {
+  headers?: RequestHeaders;
 }
-export interface RequestProps extends InitRequest {
-  body?: RequestBody;
+
+export interface RequestOptions<Body> extends InitRequest {
+  body?: RequestBody<Body>;
+}
+export interface RequestProps<Body> extends InitRequest {
+  body?: RequestBody<Body>;
   headers?: RequestHeaders;
 }
 
@@ -18,7 +21,7 @@ export interface RequestProps extends InitRequest {
  * @param body
  * @returns boolean;
  */
-const isBodyTypeLikeJson = (body?: RequestBody): boolean => {
+const isBodyTypeLikeJson = <Body>(body?: RequestBody<Body>): boolean => {
   const isBodyFormData = body instanceof FormData;
   const isBodyBlob = body instanceof Blob || body instanceof File || body instanceof ArrayBuffer;
   return !isBodyFormData && !isBodyBlob;
@@ -29,7 +32,7 @@ const isBodyTypeLikeJson = (body?: RequestBody): boolean => {
  * @param body
  * @returns BodyInit | null
  */
-const serializeBody = (body?: RequestBody): BodyInit | null => {
+const serializeBody = <Body>(body?: RequestBody<Body>): BodyInit | null => {
   if (!body) return null;
   if (isBodyTypeLikeJson(body) && typeof body === 'object') {
     return JSON.stringify(body);
@@ -42,8 +45,8 @@ const serializeBody = (body?: RequestBody): BodyInit | null => {
  * @param defaultHeaders
  * @returns (body: RequestBody, headers: RequestHeaders): RequestHeaders
  */
-const composeHeaders = (defaultHeaders: RequestHeaders) => (
-  body?: RequestBody,
+const composeHeaders = (defaultHeaders: RequestHeaders) => <Body>(
+  body?: RequestBody<Body>,
   headers?: RequestHeaders,
 ): RequestHeaders => {
   if (!headers) return defaultHeaders;
@@ -74,9 +77,9 @@ export const withDefaultOptions = (options: RequestOptionsWoBody): RequestOption
  * @param initHeaders
  * @returns RequestInit
  */
-export const requestInit = (initOptions: RequestOptions, initHeaders?: RequestHeaders): RequestInit => {
+export const requestInit = <Body>(initOptions: RequestOptions<Body>, initHeaders?: RequestHeaders): RequestInit => {
   const {body, method, ...restReq} = initOptions;
-  const headers = withDefaultHeaders(body, initHeaders);
+  const headers = withDefaultHeaders<Body>(body, initHeaders);
   const requestOptions = withDefaultOptions(restReq);
   switch (method) {
     case 'get':
@@ -91,7 +94,7 @@ export const requestInit = (initOptions: RequestOptions, initHeaders?: RequestHe
         ...requestOptions,
         method,
         headers,
-        body: serializeBody(body),
+        body: serializeBody<Body>(body),
       };
   }
 };
