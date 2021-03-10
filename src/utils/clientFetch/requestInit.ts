@@ -23,18 +23,6 @@ const isBodyTypeLikeJson = (body?: RequestBody): boolean => {
   const isBodyBlob = body instanceof Blob || body instanceof File || body instanceof ArrayBuffer;
   return !isBodyFormData && !isBodyBlob;
 };
-/**
- * Composes default headers with optional headers
- * @param defaultHeaders
- * @returns (body: RequestBody, headers: RequestHeaders): RequestHeaders
- */
-const composeHeaders = (defaultHeaders: RequestHeaders) => (
-  body?: RequestBody,
-  headers?: RequestHeaders,
-): RequestHeaders => {
-  if (!headers) return defaultHeaders;
-  return isBodyTypeLikeJson(body) ? {...defaultHeaders, ...headers} : headers;
-};
 
 /**
  * Converts body to json if possible
@@ -49,11 +37,37 @@ const serializeBody = (body?: RequestBody): BodyInit | null => {
   return body as BodyInit;
 };
 
+/**
+ * Composes default headers with optional headers
+ * @param defaultHeaders
+ * @returns (body: RequestBody, headers: RequestHeaders): RequestHeaders
+ */
+const composeHeaders = (defaultHeaders: RequestHeaders) => (
+  body?: RequestBody,
+  headers?: RequestHeaders,
+): RequestHeaders => {
+  if (!headers) return defaultHeaders;
+  return isBodyTypeLikeJson(body) ? {...defaultHeaders, ...headers} : headers;
+};
+
+/**
+ *  Merges special request headers with default
+ *  @param body
+ *  @param headers
+ *  @returns RequestHeaders
+ */
+export const withDefaultHeaders = composeHeaders(defaultRequestHeaders);
+
+/**
+ *  Merges special request options with default
+ * @param options
+ * @returns RequestOptionsWoBody
+ */
 export const withDefaultOptions = (options: RequestOptionsWoBody): RequestOptionsWoBody => ({
   ...defaultRequestOptions,
   ...options,
 });
-export const withDefaultHeaders = composeHeaders(defaultRequestHeaders);
+
 /**
  *
  * @param initOptions
