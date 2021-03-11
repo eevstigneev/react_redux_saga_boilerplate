@@ -1,5 +1,5 @@
 import type {Config} from '@jest/types';
-import {appPath} from './config/paths';
+import {appPath} from '../paths';
 
 function mapFromRootDir(path: string): string {
   return `<rootDir>/${path}`;
@@ -19,6 +19,8 @@ const config: Config.InitialOptions = {
   moduleNameMapper: {
     '^src/(.*)$': mapFromRootDir('src/$1'),
   },
+  resetMocks: false,
+  setupFiles: [mapFromRootDir('__mocks__/localStorage/setup.ts')],
 };
 
 export default config;

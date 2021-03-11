@@ -30,7 +30,8 @@
   },
   "include": [
     "config",
-    "src"
+    "src",
+    "__mocks__"
   ],
   "exclude": [
     "node_modules",

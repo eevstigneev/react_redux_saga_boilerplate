@@ -13,23 +13,14 @@ const APP_STORES_TYPES = [EAppStoreNames.local, EAppStoreNames.session];
  * @return {Storage}
  */
 export const getStorage = (storage: EAppStoreNames): Storage => {
-  const fakeStore = {
-    key: () => null,
-    clear: () => null,
-    getItem: () => null,
-    removeItem: () => null,
-    setItem: () => null,
-    length: 0,
-  };
   try {
     const store = window[storage];
     store.setItem('test', 'test');
     store.removeItem('test');
     return store;
   } catch (e) {
-    Error(e);
+    throw Error(e);
   }
-  return fakeStore;
 };
 
 /**
@@ -53,12 +44,8 @@ export const getFromStorage = (fromStorage: EAppStoreNames, key: string): Storag
  */
 export const setToStorage = (toStorage: EAppStoreNames, key: string, value: string): boolean => {
   if (APP_STORES_TYPES.indexOf(toStorage) !== -1) {
-    try {
-      getStorage(toStorage).setItem(key, value);
-      return true;
-    } catch (e) {
-      return false;
-    }
+    getStorage(toStorage).setItem(key, value);
+    return true;
   }
   return false;
 };
@@ -70,12 +57,8 @@ export const setToStorage = (toStorage: EAppStoreNames, key: string, value: stri
  */
 export const removeFromStorage = (fromStorage: EAppStoreNames, key: string): boolean => {
   if (APP_STORES_TYPES.indexOf(fromStorage) !== -1) {
-    try {
-      getStorage(fromStorage).removeItem(key);
-      return true;
-    } catch (e) {
-      return false;
-    }
+    getStorage(fromStorage).removeItem(key);
+    return true;
   }
   return false;
 };
@@ -86,12 +69,8 @@ export const removeFromStorage = (fromStorage: EAppStoreNames, key: string): boo
  */
 export const clearStorage = (storage: EAppStoreNames = EAppStoreNames.local): boolean => {
   if (APP_STORES_TYPES.indexOf(storage) !== -1) {
-    try {
-      getStorage(storage).clear();
-      return true;
-    } catch (e) {
-      return false;
-    }
+    getStorage(storage).clear();
+    return true;
   }
   return false;
 };
