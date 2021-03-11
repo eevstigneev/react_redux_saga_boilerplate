@@ -85,17 +85,52 @@ describe('Storage', () => {
     test('should save to localStorage', () => {
       expect(setToStorage(EAppStoreNames.local, KEY, VALUE)).toBe(true);
     });
+    test('should save to sessionStorage', () => {
+      expect(setToStorage(EAppStoreNames.session, KEY, VALUE)).toBe(true);
+    });
+    test('should not save to unknownStorage', () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      expect(setToStorage('unknown', KEY, VALUE)).toBe(false);
+    });
     test('should have saved localStorage', () => {
       expect(getFromStorage(EAppStoreNames.local, KEY)).toBe(VALUE);
+    });
+    test('should have saved sessionStorage', () => {
+      expect(getFromStorage(EAppStoreNames.session, KEY)).toBe(VALUE);
+    });
+    test('should not have saved unknownStorage', () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      expect(getFromStorage('unknown', KEY)).toBe(null);
     });
     test('should remove from localStorage', () => {
       expect(removeFromStorage(EAppStoreNames.local, KEY)).toBe(true);
     });
+    test('should remove from sessionStorage', () => {
+      expect(removeFromStorage(EAppStoreNames.session, KEY)).toBe(true);
+    });
+    test('should not remove from unknownStorage', () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      expect(removeFromStorage('unknown', KEY)).toBe(false);
+    });
     test('should clear localStorage', () => {
       expect(clearStorage(EAppStoreNames.local)).toBe(true);
     });
+    test('should clear sessionStorage', () => {
+      expect(clearStorage(EAppStoreNames.session)).toBe(true);
+    });
+    test('should not clear unknownStorage', () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      expect(clearStorage('unknown')).toBe(false);
+    });
     test('should not have saved to localStorage', () => {
       expect(getFromStorage(EAppStoreNames.local, KEY)).toBe(null);
+    });
+    test('should not have saved to sessionStorage', () => {
+      expect(getFromStorage(EAppStoreNames.session, KEY)).toBe(null);
     });
   });
 });

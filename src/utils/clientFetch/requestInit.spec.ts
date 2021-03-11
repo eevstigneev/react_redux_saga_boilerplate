@@ -17,6 +17,11 @@ describe('API properties composer', () => {
   });
 
   describe('Post | Put | Delete', () => {
+    test('should have property body if body in not defined', () => {
+      const mock = {method: 'post'};
+      expect(requestInit(mock)).toHaveProperty('body');
+      expect(requestInit(mock)).toMatchObject({body: null});
+    });
     test('should transform body to json', () => {
       const mock = {method: 'post', body: {test: 'test'}};
       expect(requestInit(mock).body).toStrictEqual(JSON.stringify(mock.body));
