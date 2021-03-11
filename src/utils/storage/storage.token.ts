@@ -9,7 +9,7 @@ const getTokenExpirationDate = (expires: string | number): Date => {
 
 export const isExpiredToken = <Token>(encodedToken: Token, expiresKey = 'expires'): boolean => {
   if (!encodedToken || !(expiresKey in encodedToken)) {
-    return false;
+    return true;
   }
   const rightNow = new Date();
   const expirationDate = getTokenExpirationDate(encodedToken[expiresKey]);

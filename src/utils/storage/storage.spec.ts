@@ -40,10 +40,10 @@ describe('Storage', () => {
 
   describe('Store key should be local or session storage', () => {
     test('should be local storage', () => {
-      expect(isAppStoreTypeExist(EAppStoreNames.local)).toBeTruthy();
+      expect(isAppStoreTypeExist(EAppStoreNames.local)).toBe(true);
     });
     test('should be session storage', () => {
-      expect(isAppStoreTypeExist(EAppStoreNames.session)).toBeTruthy();
+      expect(isAppStoreTypeExist(EAppStoreNames.session)).toBe(true);
     });
   });
 
