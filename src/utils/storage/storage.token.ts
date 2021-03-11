@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {EAppStoreNames, getFromStorage, removeFromStorage, setToStorage} from './storage';
 
-const TOKEN_KEY = 'token';
+export const TOKEN_KEY = 'token';
 
 const getTokenExpirationDate = (expires: string | number): Date => {
   return !expires ? new Date(0) : new Date(expires);

@@ -1,4 +1,23 @@
-import {clearStorage, EAppStoreNames, getFromStorage, getStorage, removeFromStorage, setToStorage} from './storage';
+import {
+  clearStorage,
+  EAppStoreNames,
+  getFromStorage,
+  getStorage,
+  isAppStoreTypeExist,
+  removeFromStorage,
+  setToStorage,
+} from './storage';
+
+const destroyStorage = (storageName: EAppStoreNames) => {
+  const originalStorage = global[storageName];
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  global[storageName] = undefined;
+  delete global[storageName];
+  return () => {
+    Object.defineProperty(global, storageName, {value: originalStorage, writable: true});
+  };
+};
 
 beforeAll(() => {
   // to fully reset the state between tests, clear the storage
@@ -7,48 +26,59 @@ beforeAll(() => {
   jest.clearAllMocks();
 });
 
+const storageName = EAppStoreNames.local;
+
 describe('Storage', () => {
   test('Is testing library works properly', () => {
-    const storage = getStorage(EAppStoreNames.local);
+    const storage = getStorage(storageName);
     const KEY = 'FOO';
     const VALUE = 'BAR';
     storage.setItem(KEY, VALUE);
     expect(storage.getItem(KEY)).toBe(VALUE);
     expect(storage.length).toBe(1);
   });
-  describe('Storage is undefined', () => {
-    test('should undefined storage', () => {
-      expect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        return getStorage('__unknown__');
-      }).toThrow(Error);
+
+  describe('Store key should be local or session storage', () => {
+    test('should be local storage', () => {
+      expect(isAppStoreTypeExist(EAppStoreNames.local)).toBeTruthy();
+    });
+    test('should be session storage', () => {
+      expect(isAppStoreTypeExist(EAppStoreNames.session)).toBeTruthy();
+    });
+  });
+
+  describe('Storage is not defined', () => {
+    test('should throw Error', () => {
+      const restoreStorage = destroyStorage(storageName);
+      expect(() => getStorage(storageName)).toThrow(Error);
+      restoreStorage();
     });
     test('should not returns value', () => {
       const KEY = 'test';
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      expect(getFromStorage('__unknown__', KEY)).toBe(null);
+      const restoreStorage = destroyStorage(storageName);
+      expect(getFromStorage(storageName, KEY)).toBe(null);
+      restoreStorage();
     });
     test('should not save value', () => {
       const KEY = 'FOO';
       const VALUE = 'BAR';
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      expect(setToStorage('__unknown__', KEY, VALUE)).toBe(false);
+      const restoreStorage = destroyStorage(storageName);
+      expect(setToStorage(storageName, KEY, VALUE)).toBe(false);
+      restoreStorage();
     });
     test('should not remove value', () => {
       const KEY = 'test';
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      expect(removeFromStorage('__unknown__', KEY)).toBe(false);
+      const restoreStorage = destroyStorage(storageName);
+      expect(removeFromStorage(storageName, KEY)).toBe(false);
+      restoreStorage();
     });
     test('should not clear storage', () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      expect(clearStorage('__unknown__')).toBe(false);
+      const restoreStorage = destroyStorage(storageName);
+      expect(clearStorage(storageName)).toBe(false);
+      restoreStorage();
     });
   });
+
   describe('(Local | Session)Storage', () => {
     const KEY = 'FOO';
     const VALUE = 'BAR';

@@ -9,7 +9,8 @@
     "build": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.production.ts",
     "lint": "tsc -p ./tsconfig.json && eslint 'src/**/*.{ts,tsx}' --quiet",
     "test": "cross-env NODE_ENV=test jest -c config/jest/jest.config.ts",
-    "test:watch": "cross-env NODE_ENV=test jest -c config/jest/jest.config.ts --watch"
+    "test:watch": "yarn test --watch",
+    "test:coverage": "yarn test --coverage"
   },
   "engines": {
     "node": "^14.15.4"

@@ -1,6 +1,6 @@
 import {EAppStoreNames, getFromStorage, setToStorage} from './storage';
 
-const USER_KEY = 'userInfo';
+export const USER_KEY = 'userInfo';
 
 export const setUserData = <Data>(
   value: Data,

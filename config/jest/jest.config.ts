@@ -9,7 +9,7 @@ const config: Config.InitialOptions = {
   rootDir: appPath,
   preset: 'ts-jest',
   transform: {'^.+\\.tsx?$': 'ts-jest'},
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: [mapFromRootDir('src/**/*.{ts,tsx,js,jsx}'), '!**/node_modules/**'],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
