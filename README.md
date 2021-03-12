@@ -26,7 +26,7 @@ Before you start, take a moment to see how the project structure looks like:
 ├── src                        # Where your source code lives
 │   ├── api                    # Base class for transport with available methods and configuration
 │   ├── components             # Shared React components and containers
-│   ├── entities               # Page/screen components along with own components separated by entities
+│   ├── entities               # Page/screen components along with own components
 │   ├── hooks                  # React hooks
 │   ├── misc                   # Layout components or non-entity components
 │   ├── store                  # Redux storage, redux slices, api
