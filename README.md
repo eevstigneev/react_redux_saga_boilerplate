@@ -34,7 +34,7 @@ Before you start, take a moment to see how the project structure looks like:
 │   ├── utils                  # Collection of utils function that we use in the project
 │   ├── routes.ts              # The routing information
 │   ├── types.ts               # Shared types of the app
-│   └── index.ts               # Entry point of the API
+│   └── index.ts               # Entry point of the app
 │
 ├── .gitignore                 # Standard gitignore file
 ├── .eslintrc                  # ESlint configuration
