@@ -4,9 +4,7 @@ type InitRequest = Omit<RequestInit, 'headers' | 'body'>;
 export type RequestHeaders = Record<string, string>;
 export type RequestBody<Body = void> = BodyInit extends Body ? BodyInit : Body;
 
-export interface RequestOptionsWoBody extends InitRequest {
-  headers?: RequestHeaders;
-}
+export type RequestOptionsWoBody = InitRequest;
 
 export interface RequestOptions<Body> extends InitRequest {
   body?: RequestBody<Body>;

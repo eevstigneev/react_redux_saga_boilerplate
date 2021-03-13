@@ -3,8 +3,9 @@ import {Button, Form as AntForm, Input} from 'antd';
 import {FormProps, FormInstance} from 'antd/es';
 import {MemberDTO} from 'src/store/member/member.interfaces';
 
-type FormInstanceInRule = Omit<FormInstance, 'scrollToField' | '__INTERNAL__' | 'getFieldInstance'>;
 const defaultRules = [{required: true}, {max: 255, message: 'Поле не должно содержать более 255 символов.'}];
+
+type FormInstanceInRule = Omit<FormInstance, 'scrollToField' | '__INTERNAL__' | 'getFieldInstance'>;
 const passwordCompare = ({getFieldValue}: FormInstanceInRule) => ({
   validator(_: unknown, value: string) {
     if (!value || getFieldValue('password') === value) {
@@ -15,7 +16,9 @@ const passwordCompare = ({getFieldValue}: FormInstanceInRule) => ({
   },
 });
 
-const Form: React.FC<FormProps<MemberDTO.UpdateRequest | MemberDTO.CreateRequest>> = props => {
+const Form = <Payload extends MemberDTO.CreateRequest | MemberDTO.UpdateRequest>(
+  props: FormProps<Payload>,
+): React.ReactElement<typeof props> => {
   const [form] = AntForm.useForm();
   const {initialValues} = props;
   useEffect(() => {

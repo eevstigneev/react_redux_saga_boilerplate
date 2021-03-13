@@ -2,7 +2,7 @@
 
 ### Requirements
 - Mac OS X, Windows, or Linux
-- [Yarn](https://yarnpkg.com/) package + [Node.js](https://nodejs.org/) v14.16 LTS or older
+- [Yarn](https://yarnpkg.com/) package + [Node.js](https://nodejs.org/) v14.16 LTS
 - Text editor or IDE pre-configured with React/JSX/TypeScript/ESlint
 
 ### Technologies used

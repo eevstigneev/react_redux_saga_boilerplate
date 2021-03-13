@@ -1,5 +1,5 @@
 import type {Config} from '@jest/types';
-import {appPath} from '../paths';
+import {appPath} from './config/paths';
 
 function mapFromRootDir(path: string): string {
   return `<rootDir>/${path}`;

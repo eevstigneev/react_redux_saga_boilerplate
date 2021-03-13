@@ -8,12 +8,12 @@
     "start": "cross-env NODE_ENV=development webpack serve --config config/webpack/webpack.development.ts",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack/webpack.production.ts",
     "lint": "tsc -p ./tsconfig.json && eslint 'src/**/*.{ts,tsx}' --quiet",
-    "test": "cross-env NODE_ENV=test jest -c config/jest/jest.config.ts",
+    "test": "cross-env NODE_ENV=test jest -c jest.config.ts",
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage"
   },
   "engines": {
-    "node": "^14.15.4"
+    "node": "^14.16"
   },
   "browserslist": {
     "production": [
@@ -84,6 +84,7 @@
     "jest": "^26.6.3",
     "less": "^4.1.1",
     "less-loader": "^8.0.0",
+    "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",

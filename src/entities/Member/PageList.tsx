@@ -6,7 +6,7 @@ import {ROUTES} from 'src/routes';
 import {removeOne, fetch, useMemberAction, useMemberStore} from 'src/store/member/member.actions';
 import Table from './Table';
 
-const List: React.FC = () => {
+const PageList: React.FC = () => {
   const {list} = useMemberStore();
   const handleFetch = useMemberAction(fetch);
   const handleDelete = useMemberAction(removeOne);
@@ -25,4 +25,4 @@ const List: React.FC = () => {
   );
 };
 
-export default List;
+export default PageList;

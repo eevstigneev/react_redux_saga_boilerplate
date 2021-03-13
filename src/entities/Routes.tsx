@@ -12,7 +12,7 @@ import LayoutAdmin from 'src/misc/Admin/Admin';
 import Authorization from './Authorization/Page';
 
 /** private */
-import MemberList from './Member/List';
+import MemberList from './Member/PageList';
 
 export const Public = (): ReturnType<typeof useRoutes> =>
   useRoutes([
