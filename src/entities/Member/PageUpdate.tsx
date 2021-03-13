@@ -10,7 +10,7 @@ const PageCreate: React.FC = () => {
   const {memberId} = useParams();
   const {item: member} = useMemberStore();
   const fetchMember = useMemberAction(fetchOne);
-  const addMember = useMemberAction(updateOne);
+  const updateMember = useMemberAction(updateOne);
 
   useEffect(() => {
     fetchMember({id: memberId});
@@ -19,7 +19,7 @@ const PageCreate: React.FC = () => {
   return (
     <>
       <PageHeader title="Редактирование пользователя" onBack={() => navigator('../')} />
-      <Form<MemberDTO.UpdateRequest> onFinish={addMember} initialValues={member ?? {}} />
+      <Form<MemberDTO.UpdateRequest> onFinish={updateMember} initialValues={member ?? {}} />
     </>
   );
 };
